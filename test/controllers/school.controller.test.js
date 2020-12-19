@@ -1,8 +1,8 @@
-const School = require('../../lib/models/school.model');
+const schoolController = require('../../lib/controllers/school.controller')
 const testHelper = require('../testHelper');
-const modelTestHelper = require('../model.testHelper');
+const sinon = require('sinon');
 
-describe('School Model Create Test', () => {
+describe('School Create Test', () => {
     beforeAll( () => {
         testHelper.connectToMongoDB();
     });
@@ -27,7 +27,26 @@ describe('School Model Create Test', () => {
         {title: 'number of students is a string', inputData: {name: 'test name', address: 'test address', noOfStudents: 'test'}, error: 'School validation failed: noOfStudents: Cast to Number failed for value "test" at path "noOfStudents"'},
     ];
 
-    testDataForSchoolCreation.forEach((testData) => {
-        modelTestHelper.testModelCreation( () => {return (new School(testData.inputData)).save()}, testData);
-    });
+    for (let i=0; i<testDataForSchoolCreation.length; i++) {
+        let testData = testDataForSchoolCreation[i];
+        it('input validations: '+testData.title, async () => {
+            let req = { body: testData.inputData };
+            let fakeSendMethod = sinon.fake();
+            let fakeStatusMethod = sinon.fake.returns({send: fakeSendMethod});
+            let res = {status: fakeStatusMethod, send: fakeSendMethod};
+            await schoolController.create(req, res);
+            expect(fakeSendMethod.callCount).toBe(1);
+            if (testData.error) {
+                expect(fakeStatusMethod.callCount).toBe(1);
+                expect(fakeStatusMethod.getCall(0).firstArg).toBe(400);
+                expect(fakeSendMethod.getCall(0).firstArg.message).toBe(testData.error);
+            } else {
+                for (let property in testData.expectedModelProperties) {
+                    if (testData.expectedModelProperties.hasOwnProperty(property)) {
+                        expect(fakeSendMethod.getCall(0).firstArg[property]).toBe(testData.expectedModelProperties[property]);
+                    }
+                }
+            }
+        });
+    }
 })
