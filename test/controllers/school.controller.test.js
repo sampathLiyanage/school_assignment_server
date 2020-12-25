@@ -27,6 +27,7 @@ describe('School Create Test', () => {
         {title: 'address length is 1001', inputData: {name: 'test name', address: stringWith1001Chars}, error: 'School validation failed: address: maximum length is 1000'},
         {title: 'number of students is valid', inputData: {name: 'test name', address: 'test address', noOfStudents: 123}, expectedModelProperties: {name: 'test name', address: 'test address', noOfStudents: 123}},
         {title: 'number of students is a string', inputData: {name: 'test name', address: 'test address', noOfStudents: 'test'}, error: 'School validation failed: noOfStudents: Cast to Number failed for value "test" at path "noOfStudents"'},
+        {title: 'number of students is a decimal number', inputData: {name: 'test name', address: 'test address', noOfStudents: 1.2}, error: 'School validation failed: noOfStudents: should be an integer value'},
     ];
 
     for (let i=0; i<testCases.length; i++) {
