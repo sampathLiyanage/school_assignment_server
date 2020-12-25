@@ -109,7 +109,7 @@ describe('School Find Test',  () => {
     for (let i=0; i<testCases.length; i++) {
         let testData = testCases[i];
         it(testData.title, async () => {
-            let req = { params: testData.filter };
+            let req = { query: testData.filter };
             let fakeSendMethod = sinon.fake();
             let res = {send: fakeSendMethod};
             await schoolController.get(req, res);
