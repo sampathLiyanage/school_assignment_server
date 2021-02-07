@@ -9,6 +9,11 @@ app.use(express.static('apidoc'))
 const databaseService = require('./lib/services/database.service');
 databaseService.connectToMongoDB();
 
+app.use(function(req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  next();
+});
+
 app.get('/', (req, res) => {
   res.json({"message": "Welcome to SkoolBag application."});
 });
