@@ -11,6 +11,8 @@ databaseService.connectToMongoDB();
 
 app.use(function(req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', '*')
+  res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-type,Accept,X-Access-Token,X-Key');
   next();
 });
 
