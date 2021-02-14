@@ -87,6 +87,55 @@ define({ "api": [
     "groupTitle": "School"
   },
   {
+    "type": "delete",
+    "url": "/schools",
+    "title": "Remove (delete) all Schools",
+    "name": "DeleteSchools",
+    "group": "School",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Json",
+            "optional": false,
+            "field": "empty",
+            "description": "<p>array</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n[]",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "GenericError",
+            "description": "<p>Generic error</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n  \"message\": \"Some error occurred while retrieving schools\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "lib/routes/school.routes.js",
+    "groupTitle": "School"
+  },
+  {
     "type": "get",
     "url": "/schools?name=:name&address=:address&search=:search",
     "title": "Get Schools",
